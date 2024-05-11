@@ -2,7 +2,6 @@
 
 set -euo pipefail
 
-# TODO: Ensure this is the correct GitHub homepage where releases can be downloaded for llamafile.
 GH_REPO="https://github.com/Mozilla-Ocho/llamafile"
 TOOL_NAME="llamafile"
 TOOL_TEST="llamafile --version"
@@ -41,8 +40,8 @@ download_release() {
 	version="$1"
 	filename="$2"
 
-	# TODO: Adapt the release URL convention for llamafile
-	url="$GH_REPO/archive/v${version}.tar.gz"
+	# https://github.com/Mozilla-Ocho/llamafile/releases/download/0.8.4/llamafile-0.8.4.zip
+	url="$GH_REPO/releases/download/${version}/llamafile-${version}.zip"
 
 	echo "* Downloading $TOOL_NAME release $version..."
 	curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
@@ -61,7 +60,6 @@ install_version() {
 		mkdir -p "$install_path"
 		cp -r "$ASDF_DOWNLOAD_PATH"/* "$install_path"
 
-		# TODO: Assert llamafile executable exists.
 		local tool_cmd
 		tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
 		test -x "$install_path/$tool_cmd" || fail "Expected $install_path/$tool_cmd to be executable."
